@@ -2,6 +2,8 @@ package org.wsan.hibernateapp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /*
 (JPA: Jakarta Persistence API)
 @Entity,@Table
@@ -72,7 +74,13 @@ public class Factura {
                 "id=" + id +
                 ", descripcion='" + descripcion + '\'' +
                 ", total=" + total +
-                ", cliente=" + cliente +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Factura factura = (Factura) o;
+        return Objects.equals(id, factura.id) && Objects.equals(descripcion, factura.descripcion) && Objects.equals(total, factura.total);
     }
 }
