@@ -3,6 +3,8 @@ package org.wsan.hibernateapp.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -22,18 +24,24 @@ public class Cliente {
     @Embedded
     private Auditoria audit = new Auditoria();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Direccion> direcciones;
+
     //constructor vacío
     public Cliente() {
+        direcciones = new ArrayList<>();
     }
 
     //contructor con 2 parametros
     public Cliente(String nombre, String apellido) {
+        this();
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
     //contructor con 4 parametros
     public Cliente(Long id, String nombre, String apellido, String formaPago) {
+        this();
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -72,6 +80,14 @@ public class Cliente {
         this.formaPago = formaPago;
     }
 
+    public List<Direccion> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
+    }
+
     @Override
     public String toString() {
         LocalDateTime creado = this.audit != null? audit.getCreadoEn():null;
@@ -81,6 +97,8 @@ public class Cliente {
                 ", apellido='" + apellido + '\'' +
                 ", formaPago='" + formaPago + '\'' +
                 ", creadoEn='" + creado + '\'' +
-                ", editadoEn='" + editado + '\'' +'}';
+                ", editadoEn='" + editado + '\'' +
+                ", direcciones='" + direcciones + '\'' +
+                '}';
     }
 }

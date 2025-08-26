@@ -5,17 +5,14 @@ import org.wsan.hibernateapp.entity.Cliente;
 import org.wsan.hibernateapp.entity.Factura;
 import org.wsan.hibernateapp.util.JpaUtil;
 
-public class HibernateAsociacionesManyToOne {
+public class HibernateAsociacionesManyToOneFind {
     public static void main(String[] args) {
 
         EntityManager em = JpaUtil.getEntityManager();//paso inicial para realizar cualquier operacion de DB usando JPA
 
         try{
             em.getTransaction().begin();
-            //Objeto Cliente
-            Cliente cliente = new Cliente("Cata", "Edu");
-            cliente.setFormaPago("credito");
-            em.persist(cliente);
+            Cliente cliente = em.find(Cliente.class, 1L);
 
             //Objeto factura
             Factura factura = new Factura("compras de oficina", 1000L);

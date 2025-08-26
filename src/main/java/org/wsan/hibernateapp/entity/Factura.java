@@ -22,6 +22,7 @@ public class Factura {
     private Long total;
 
     @ManyToOne//muchas facturas un cliente
+    @JoinColumn(name="id_client")//se indica de forma manual el nombre de la llave foranea
     private Cliente cliente;
 
     //constructor vacío
