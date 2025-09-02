@@ -5,7 +5,7 @@ import org.wsan.hibernateapp.entity.Alumno;
 import org.wsan.hibernateapp.entity.Curso;
 import org.wsan.hibernateapp.util.JpaUtil;
 
-public class HibernateAsociacionesManyToMany {
+public class HibernateAsociacionesManyToManyBidireccional {
     public static void main(String[] args) {
 
         EntityManager em = JpaUtil.getEntityManager();
@@ -19,10 +19,10 @@ public class HibernateAsociacionesManyToMany {
             Curso curso2 = new Curso("Curso Hibernate y JPA", "Andres");
 
             //establecer la relación
-            alumno1.getCursos().add(curso1);
-            alumno1.getCursos().add(curso2);
+            alumno1.addCurso(curso1);
+            alumno1.addCurso(curso2);
 
-            alumno2.getCursos().add(curso1);
+            alumno2.addCurso(curso1);
 
             em.persist(alumno1);
             em.persist(alumno2);
@@ -33,8 +33,10 @@ public class HibernateAsociacionesManyToMany {
 
             //nueva transacción para eliminar
             em.getTransaction().begin();
-            Curso c2 = em.find(Curso.class, 3L);
-            alumno1.getCursos().remove(c2);
+            // Curso c2 = em.find(Curso.class, 3L);
+            Curso c2 = new Curso("Curso Java", "Andres");
+            c2.setId(3L);
+            alumno1.removeCurso(c2);
             em.getTransaction().commit();
             System.out.println(alumno1);
             System.out.println(alumno2);

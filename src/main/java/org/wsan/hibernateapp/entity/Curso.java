@@ -2,6 +2,10 @@ package org.wsan.hibernateapp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name="cursos")//este es el nombre que llevara la tabla en la DB
 public class Curso {
@@ -18,11 +22,17 @@ public class Curso {
     private String titulo;
     private String profesor;
 
-    //contructor vacío
-    public Curso(){}
+    @ManyToMany(mappedBy = "cursos")
+    private List<Alumno> alumnos;
+
+    //contructor vacío, inicializa una lista.
+    public Curso(){
+        this.alumnos = new ArrayList<>();
+    }
 
     //constructor con 2 parametros
     public Curso(String titulo, String profesor){
+        this();
         this.titulo = titulo;
         this.profesor = profesor;
     }
@@ -33,7 +43,7 @@ public class Curso {
         return id;
     }
 
-    public void getId(Long id){
+    public void setId(Long id){
         this.id = id;
     }
 
@@ -51,6 +61,26 @@ public class Curso {
 
     public void setProfesor(String profesor){
         this.profesor = profesor;
+    }
+
+    public List<Alumno> getAlumnos(){
+        return alumnos;
+    }
+
+    public void setAlumnos(List<Alumno> alumnos){
+        this.alumnos = alumnos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Curso curso = (Curso) o;
+        return Objects.equals(id, curso.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override

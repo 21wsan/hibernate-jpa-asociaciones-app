@@ -5,18 +5,18 @@ import org.wsan.hibernateapp.entity.Alumno;
 import org.wsan.hibernateapp.entity.Curso;
 import org.wsan.hibernateapp.util.JpaUtil;
 
-public class HibernateAsociacionesManyToMany {
+public class HibernateAsociacionesManyToManyFind {
     public static void main(String[] args) {
 
         EntityManager em = JpaUtil.getEntityManager();
 
         try{
             em.getTransaction().begin();
-            Alumno alumno1 = new Alumno("Cata", "Edu");
-            Alumno alumno2 = new Alumno("Jano", "Fernan");
+            Alumno alumno1 = em.find(Alumno.class, 1L);
+            Alumno alumno2 = em.find(Alumno.class, 2L);
 
-            Curso curso1 = new Curso("Curso Java", "Andres");
-            Curso curso2 = new Curso("Curso Hibernate y JPA", "Andres");
+            Curso curso1 = em.find(Curso.class, 1L); //new Curso("Curso Java", "Andres");
+            Curso curso2 = em.find(Curso.class, 2L); //new Curso("Curso Hibernate y JPA", "Andres");
 
             //establecer la relación
             alumno1.getCursos().add(curso1);
@@ -24,18 +24,8 @@ public class HibernateAsociacionesManyToMany {
 
             alumno2.getCursos().add(curso1);
 
-            em.persist(alumno1);
-            em.persist(alumno2);
             em.getTransaction().commit();
 
-            System.out.println(alumno1);
-            System.out.println(alumno2);
-
-            //nueva transacción para eliminar
-            em.getTransaction().begin();
-            Curso c2 = em.find(Curso.class, 3L);
-            alumno1.getCursos().remove(c2);
-            em.getTransaction().commit();
             System.out.println(alumno1);
             System.out.println(alumno2);
         }catch (Exception e){

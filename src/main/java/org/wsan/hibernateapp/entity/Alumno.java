@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name="alumnos")//este es el nombre que llevara la tabla en la DB
+@Table(name = "alumnos")//este es el nombre que llevara la tabla en la DB
 public class Alumno {
 
     @Id
@@ -18,42 +19,45 @@ public class Alumno {
     private String apellido;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "tbl_alumnos_cursos", joinColumns = @JoinColumn(name = "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"alumno_id", "curso_id"}))
     private List<Curso> cursos;
 
     //contructor vacío que inicializa una nueva instancia de la clase Alumno
-    public Alumno(){
+    public Alumno() {
         this.cursos = new ArrayList<>();
     }
 
     //contructor con 2 parametros
-    public Alumno(String nombre, String apellido){
+    public Alumno(String nombre, String apellido) {
         this();
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
     //getter and setters
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNombre(){
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre){
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getApellido(){
+    public String getApellido() {
         return apellido;
     }
 
-    public void setApellido(String apellido){
+    public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
@@ -63,6 +67,28 @@ public class Alumno {
 
     public void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
+    }
+
+    public void addCurso(Curso curso){
+        this.cursos.add(curso);
+        curso.getAlumnos().add(this);
+    }
+
+    public void removeCurso(Curso curso){
+        this.cursos.remove(curso);
+        curso.getAlumnos().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Alumno alumno = (Alumno) o;
+        return Objects.equals(id, alumno.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override
