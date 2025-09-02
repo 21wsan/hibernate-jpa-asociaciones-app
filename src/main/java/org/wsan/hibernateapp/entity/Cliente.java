@@ -26,7 +26,7 @@ public class Cliente {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//orphanRemoval elimina registros huerfanos en la DB
     //@JoinColumn(name = "id_cliente")
-    @JoinTable(name = "tbl_cliente_direcciones", joinColumns = @JoinColumn(name = "id_client")
+    @JoinTable(name = "tbl_cliente_direcciones", joinColumns = @JoinColumn(name = "id_cliente")
             , inverseJoinColumns = @JoinColumn(name = "id_direccion")
             , uniqueConstraints = @UniqueConstraint(columnNames = {"id_direccion"}))
     private List<Direccion> direcciones;
