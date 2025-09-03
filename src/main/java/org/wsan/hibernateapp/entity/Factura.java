@@ -23,8 +23,8 @@ public class Factura {
     private String descripcion;
     private Long total;
 
-    @ManyToOne//muchas facturas un cliente
-    @JoinColumn(name="id_client")//se indica de forma manual el nombre de la llave foranea
+    @ManyToOne(fetch = FetchType.LAZY)//muchas facturas un cliente
+    @JoinColumn(name="id_cliente")//se indica de forma manual el nombre de la llave foranea
     private Cliente cliente;
 
     //constructor vacío

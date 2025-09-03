@@ -137,7 +137,7 @@ public class Cliente {
         this.facturas = facturas;
     }
 
-    public Cliente addFactura(Factura factura){
+    public Cliente addFactura(Factura factura) {
         this.facturas.add(factura);
         factura.setCliente(this);
         return this;
